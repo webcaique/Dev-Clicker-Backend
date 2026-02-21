@@ -11,28 +11,32 @@ async function testConnection(){
     }
 }
 
-const createPlayer = async (id, name) => {
+const createPlayer = async (name) => {
     const query = `
-    INSERT INTO players (id, name, points)
-    VALUES ($1, $2, $3)
+    INSERT INTO players (name, points)
+    VALUES ($1, $2)
+    RETURNING *
     `;
-    const values = [id, name, "0"];
+    const values = [name, "0"];
 
     const res = await pool.query(query, values)
+    .then(res => res.rows[0])
     .catch(error => {
         console.log("ERROR CREATE PLAYER", error);
-        return {status: "404"};
+        return {error: "Erro ao postar o player"};
     });
 
     return res;
 }
 
 const getAll = async () => {
-    const res = await pool.query("SELECT * FROM players")
+    const res = await pool.query("SELECT * FROM players;")
+    .then(res => res.rows)
     .catch(err => {
         console.error("ERRO GET ALL PLAYERS:\n", err);
-        return {status: "404"};
+        return {error: "Erro ao coletar todos os players"};
     });
+
     return res;
 }
 
@@ -40,13 +44,18 @@ const patchPoints = async (id, points) => {
     const query = `
         UPDATE players
         SET points = $1
-        WHERE id = $2`;
+        WHERE id = $2
+        RETURNING *;`;
     
     const values = [points.toString(), id];
 
     const res = await pool
         .query(query, values)
-        .catch( err => console.error("ERROR PATCH POINTS QUERY: ", err));
+        .then(res => res.rows[0])
+        .catch( err =>{
+            console.error("ERROR PATCH POINTS QUERY: ", err);
+            return {error: "Erro ao atualizar o player"}
+        });
 
     return res;
     
@@ -54,13 +63,14 @@ const patchPoints = async (id, points) => {
 
 const getPlayer = async (id) => {
     const query = `
-        SELECT * FROM players WHERE id=$1
+        SELECT * FROM players WHERE id=$1;
     `;
 
     const res = await pool.query(query, [id])
+    .then(res => res.rows[0])
     .catch(err => {
         console.error("ERROR GET PLAYER:\n",err);
-        return {status: "404"};
+        return {error: "Erro ao coletar o player"};
     });
     return res;
 }
@@ -71,12 +81,13 @@ const deletePlayer = async (id) => {
         WHERE id = $1;
     `
 
-    
     const res = await pool.query(query, [id])
+    .then(res => { return {message: "Deletado com sucesso!"}})
     .catch(err => {
         console.error("ERROR DELETE PLAYER:\n",err);
-        return {status: "404"}
+        return {error: "Erro ao deletar o player"}
     });
+
     return res;
 }
 module.exports = {createPlayer, getAll, patchPoints, getPlayer, testConnection, deletePlayer};

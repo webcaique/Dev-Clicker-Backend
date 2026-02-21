@@ -13,7 +13,7 @@ const { Pool } = pg;
 //     user: process.env.DB_USER,
 //     password: process.env.DB_PASSWORD,
 //     database: process.env.DB_NAME,
-//     ssl: DEBUG,
+//     ssl: process.env.DEBUG
 // });
 
 const pool = new Pool({

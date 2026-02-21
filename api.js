@@ -22,46 +22,41 @@ app.get("/", (req, res) => {
 
 app.get("/get-all-players/", async (req, res) => {
     const data = await getAll();
-    res.json(data);
+
+    if(data?.error) return res.status(500).json(data.error)
+
+    return res.status(200).json(data);
 });
 
 app.post("/init-player/", async (req, res) => {
-    const max = 126;
-    const min = 33;
-    let caracter;
-    const arrId = [];
-    const length = 32;
-    let i = 0;
-    for(i; i < length; i++) {
-        caracter = Math.floor(Math.random() * (max - min + 1)) + min;
-        arrId.push(caracter);
-    }
-
-    const uid = String.fromCharCode(...arrId);
-
-    const response = await createPlayer(uid, req.body.name);
+    const response = await createPlayer(req.body.name);
+    if(response?.error) return res.status(401).json(response.error);
     
-    res.json({uid, ...req.body});
+    return res.status(200).json({...response});
 });
 
 
 app.patch("/patch-points/", async (req, res) => {
     const response = await patchPoints(req.body.id, req.body.points);
-    res.json(response);
+    if(response?.error) return res.status(500).json(response.error);
+
+    return res.status(200).json({resposta: response});
 });
 
 app.get("/player/:id", async (req, res) => {
     const response = await getPlayer(req.params.id);
-    if(response.rowCount == 0){
-        res.statusCode = 404;
-        res.statusMessage = "Player Not Found";
-    }
-    res.json(response);
+    if(response.rowCount == 0)
+        return res.status(404).json({error:"Player não encontrado"});
+
+    return res.status(200).json({resposta: response});
 });
 
 app.delete("/player-delete/", async (req, res) => {
     const response = await deletePlayer(req.body.id);
-    res.json(response);
+
+    if(response?.error) return res.status(500).json(response.error);
+
+    return res.status(200).json({resposta: response});
 })
 
 app.listen(process.env.PORT || 3000);
