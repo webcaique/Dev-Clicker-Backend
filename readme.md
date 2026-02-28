@@ -25,6 +25,25 @@ O Dev Clicker é um jogo single‑player que roda 100% no navegador, inspirado n
 
 
 
+## Como rodar localmente
+
+1. Copie o arquivo `.env.example` para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Suba o PostgreSQL com Docker:
+   ```bash
+   docker compose up -d
+   ```
+3. Crie as tabelas no banco de dados:
+   ```bash
+   npm run migrate:up
+   ```
+4. Inicie a API:
+   ```bash
+   npm start
+   ```
+
 ## Hierarquia de arquivos e pastas no backend (essencial)
 
 ```
