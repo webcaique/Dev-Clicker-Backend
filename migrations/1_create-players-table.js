@@ -21,7 +21,7 @@ exports.up = (pgm) => {
             notNull: true,
             default: "0",
         },
-    });
+    }, {ifNotExists: true});
 };
 
 /**
