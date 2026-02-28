@@ -2,10 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "api.js",
+  "main": "src/main/api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node api.js"
+    "test": "jest --testPathPatterns=src/test",
+    "start": "nodemon src/main/api.js",
+    "migrate:up": "node-pg-migrate up --database-url-var DATABASE_URL --migrations-dir migrations",
+    "migrate:down": "node-pg-migrate down --database-url-var DATABASE_URL --migrations-dir migrations",
+    "migrate:create": "node-pg-migrate create --migrations-dir migrations"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +18,12 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "nodemon": "^3.1.11",
+    "node-pg-migrate": "^8.0.4",
     "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.14",
+    "pg-mem": "^3.0.14"
   }
 }

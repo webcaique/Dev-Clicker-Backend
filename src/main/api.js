@@ -12,7 +12,10 @@ const {
     deletePlayer
 } = require("./query.js");
 
+
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
 
@@ -45,7 +48,8 @@ app.patch("/patch-points/", async (req, res) => {
 
 app.get("/player/:id", async (req, res) => {
     const response = await getPlayer(req.params.id);
-    if(response.rowCount == 0)
+
+    if(response.rowCount === 0)
         return res.status(404).json({error:"Player não encontrado"});
 
     return res.status(200).json({resposta: response});
@@ -59,4 +63,6 @@ app.delete("/player-delete/", async (req, res) => {
     return res.status(200).json({resposta: response});
 })
 
-app.listen(process.env.PORT || 3000);
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});

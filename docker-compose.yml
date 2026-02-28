@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:14.22-alpine3.22
+    container_name: devclicker-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: devclicker
+      POSTGRES_PASSWORD: devclicker
+      POSTGRES_DB: devclicker
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

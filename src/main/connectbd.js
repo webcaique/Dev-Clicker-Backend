@@ -18,9 +18,9 @@ const { Pool } = pg;
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-    rejectUnauthorized: false
-    }
+    ssl: process.env.ENV === "local"
+        ? false
+        : { rejectUnauthorized: false }
 });
 
 module.exports = { pool };
