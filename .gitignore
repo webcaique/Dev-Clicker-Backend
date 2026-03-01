@@ -1,3 +1,5 @@
+node_modules/
+
 # Byte-compiled / cache / logs
 __pycache__/
 *.py[cod]
@@ -44,6 +46,7 @@ coverage.xml
 *.cover
 *.py,cover
 .cache
+coverage/
 
 # Build
 build/

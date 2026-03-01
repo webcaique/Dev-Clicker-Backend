@@ -25,6 +25,52 @@ O Dev Clicker é um jogo single‑player que roda 100% no navegador, inspirado n
 
 
 
+## Como rodar localmente
+
+1. Copie o arquivo `.env.example` para `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Suba o PostgreSQL com Docker:
+   ```bash
+   docker compose up -d
+   ```
+3. Crie as tabelas no banco de dados:
+   ```bash
+   npm run migrate:up
+   ```
+4. Inicie a API:
+   ```bash
+   npm start
+   ```
+
+## Como criar uma nova migration
+
+1. Crie o arquivo da migration:
+   ```bash
+   npm run migrate:create -- nome-da-migration
+   ```
+2. Edite o arquivo gerado em `migrations/` com as alterações desejadas:
+   ```javascript
+   exports.up = (pgm) => {
+     pgm.addColumns("players", {
+       level: { type: "integer", notNull: true, default: 1 },
+     });
+   };
+
+   exports.down = (pgm) => {
+     pgm.dropColumns("players", ["level"]);
+   };
+   ```
+3. Aplique a migration:
+   ```bash
+   npm run migrate:up
+   ```
+4. Para reverter, se necessário:
+   ```bash
+   npm run migrate:down
+   ```
+
 ## Hierarquia de arquivos e pastas no backend (essencial)
 
 ```
