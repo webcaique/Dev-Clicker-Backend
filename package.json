@@ -5,7 +5,8 @@
   "main": "src/main/api.js",
   "scripts": {
     "test": "jest --testPathPatterns=src/test",
-    "start": "nodemon src/main/api.js",
+    "start": "node src/main/api.js",
+    "dev": "nodemon src/main/api.js",
     "migrate:up": "node-pg-migrate up --database-url-var DATABASE_URL --migrations-dir migrations",
     "migrate:down": "node-pg-migrate down --database-url-var DATABASE_URL --migrations-dir migrations",
     "migrate:create": "node-pg-migrate create --migrations-dir migrations"
