@@ -57,6 +57,14 @@ app.delete("/player-delete/", async (req, res) => {
     if(response?.error) return res.status(500).json(response.error);
 
     return res.status(200).json({resposta: response});
+});
+
+app.get("/get-leaderboard", async (req,res) => {
+    const players = await getAll();
+
+    const sortPlayers = players.sort((a, b) => b.points - a.points).slice(0,10);
+
+    return sortPlayers;
 })
 
 app.listen(process.env.PORT || 3000);
