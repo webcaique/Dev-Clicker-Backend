@@ -62,7 +62,7 @@ app.delete("/player-delete/", async (req, res) => {
 app.get("/get-leaderboard", async (req,res) => {
     const players = await getAll();
 
-    const sortPlayers = players.sort((a, b) => b.points - a.points).slice(0,10);
+    const sortPlayers = players.sort((a, b) => b.points - a.points).slice(0,10).map(({id, ...resto}) => resto);
 
     return sortPlayers;
 })
