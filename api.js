@@ -66,7 +66,7 @@ app.get("/get-leaderboard", async (req,res) => {
 
     const sortPlayers = players.sort((a, b) => b.points - a.points).slice(0,10).map(({id, ...resto}) => resto);
 
-    return sortPlayers;
+    return res.status(200).json(sortPlayers);
 })
 
 app.listen(process.env.PORT || 3000);
