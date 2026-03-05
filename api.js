@@ -23,9 +23,11 @@ app.get("/", (req, res) => {
 app.get("/get-all-players/", async (req, res) => {
     const data = await getAll();
 
-    if(data?.error) return res.status(500).json(data.error)
+    if(data?.error) return res.status(500).json(data.error);
+    
+    const dataWithoutId = data.map(({id, ...resto}) => resto);
 
-    return res.status(200).json(data);
+    return res.status(200).json(dataWithoutId);
 });
 
 app.post("/init-player/", async (req, res) => {
